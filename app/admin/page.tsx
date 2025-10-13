@@ -2,6 +2,10 @@ import { prisma } from "@/lib/db";
 import Link from "next/link";
 import { Users, Eye, UserPlus, Calendar, Pill } from "lucide-react";
 
+// Force dynamic rendering to avoid static generation during build
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
+
 export default async function AdminPage() {
   const patients = await prisma.patient.findMany({
     orderBy: { firstName: "asc" },

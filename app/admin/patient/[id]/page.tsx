@@ -7,6 +7,10 @@ import PatientEditForm from "./PatientEditForm";
 import AppointmentEditForm from "./AppointmentEditForm";
 import PrescriptionEditForm from "./PrescriptionEditForm";
 
+// Force dynamic rendering
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
+
 export default async function PatientDetail({
   params,
 }: {
