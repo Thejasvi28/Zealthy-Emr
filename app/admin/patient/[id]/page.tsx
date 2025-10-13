@@ -1,11 +1,11 @@
 import { prisma } from "@/lib/db";
 import Link from "next/link";
 import { revalidatePath } from "next/cache";
-import { redirect } from "next/navigation";
 import { CalendarDays, ClipboardList, ArrowLeft } from "lucide-react";
 import PatientEditForm from "./PatientEditForm";
 import AppointmentEditForm from "./AppointmentEditForm";
 import PrescriptionEditForm from "./PrescriptionEditForm";
+import type { Repeat, RefillSchedule } from "@prisma/client";
 
 // Force dynamic rendering
 export const dynamic = 'force-dynamic';
@@ -99,7 +99,7 @@ export default async function PatientDetail({
                 patientId: id,
                 providerName,
                 startAt: new Date(startAt),
-                repeat: repeat as any,
+                repeat: repeat as Repeat,
               },
             });
 
@@ -182,7 +182,7 @@ export default async function PatientDetail({
                 dosage,
                 quantity,
                 refillDate: refillDate ? new Date(refillDate) : null,
-                refillSchedule: refillSchedule as any,
+                refillSchedule: refillSchedule as RefillSchedule,
               },
             });
 
