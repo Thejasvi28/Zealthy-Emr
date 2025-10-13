@@ -47,11 +47,22 @@ export async function PUT(req: Request) {
     );
 
   try {
+    // Parse datetime-local value as local time
+    let appointmentDate;
+    if (startAt.includes('T')) {
+      const [datePart, timePart] = startAt.split('T');
+      const [year, month, day] = datePart.split('-').map(Number);
+      const [hour, minute] = timePart.split(':').map(Number);
+      appointmentDate = new Date(year, month - 1, day, hour, minute);
+    } else {
+      appointmentDate = new Date(startAt);
+    }
+
     const updated = await prisma.appointment.update({
       where: { id },
       data: {
         providerName,
-        startAt: new Date(startAt),
+        startAt: appointmentDate,
         repeat,
       },
     });
