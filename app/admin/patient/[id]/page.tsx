@@ -90,23 +90,18 @@ export default async function PatientDetail({
             "use server";
             const providerName = formData.get("providerName")?.toString();
             const startAt = formData.get("startAt")?.toString();
-            const repeat = formData.get("repeat")?.toString();
+            const repeat = formData.get("repeat")?.toString() || "NONE";
 
-            await fetch(
-              `${
-                process.env.NEXT_PUBLIC_BASE_URL ?? "http://localhost:3000"
-              }/api/appointments`,
-              {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({
-                  patientId: id,
-                  providerName,
-                  startAt,
-                  repeat,
-                }),
-              }
-            );
+            if (!providerName || !startAt) return;
+
+            await prisma.appointment.create({
+              data: {
+                patientId: id,
+                providerName,
+                startAt: new Date(startAt),
+                repeat: repeat as any,
+              },
+            });
 
             revalidatePath(`/admin/patient/${id}`);
           }}
@@ -176,26 +171,22 @@ export default async function PatientDetail({
             const dosage = formData.get("dosage")?.toString();
             const quantity = Number(formData.get("quantity"));
             const refillDate = formData.get("refillDate")?.toString();
-            const refillSchedule = formData.get("refillSchedule")?.toString();
+            const refillSchedule = formData.get("refillSchedule")?.toString() || "NONE";
 
-            await fetch(
-              `${
-                process.env.NEXT_PUBLIC_BASE_URL ?? "http://localhost:3000"
-              }/api/patients/${id}/prescriptions`,
-              {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({
-                  medicationId,
-                  dosage,
-                  quantity,
-                  refillDate,
-                  refillSchedule,
-                }),
-              }
-            );
+            if (!medicationId || !dosage || !quantity) return;
 
-            redirect(`/admin/patient/${id}`);
+            await prisma.prescription.create({
+              data: {
+                patientId: id,
+                medicationId,
+                dosage,
+                quantity,
+                refillDate: refillDate ? new Date(refillDate) : null,
+                refillSchedule: refillSchedule as any,
+              },
+            });
+
+            revalidatePath(`/admin/patient/${id}`);
           }}
           className="space-y-3 mt-3 bg-gray-50 dark:bg-[#0a0a0a] p-4 rounded-lg border border-gray-200 dark:border-gray-800"
         >
