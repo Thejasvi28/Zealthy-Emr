@@ -152,11 +152,19 @@ export default function AppointmentEditForm({ appointment }: AppointmentEditForm
           <div className="text-sm text-gray-600 dark:text-gray-400 flex items-center gap-4">
             <span className="flex items-center gap-1">
               <Clock className="w-3 h-3" />
-              {new Date(appointment.startAt).toLocaleDateString()}
+              {new Date(appointment.startAt).toLocaleDateString('en-US', { 
+                month: '2-digit',
+                day: '2-digit', 
+                year: 'numeric'
+              })}
             </span>
             <span className="flex items-center gap-1">
               <Clock className="w-3 h-3" />
-              {new Date(appointment.startAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+              {new Date(appointment.startAt).toLocaleTimeString('en-US', { 
+                hour: '2-digit', 
+                minute: '2-digit',
+                hour12: true
+              })}
             </span>
             <span className="flex items-center gap-1">
               <Repeat className="w-3 h-3" />
