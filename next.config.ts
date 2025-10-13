@@ -6,10 +6,8 @@ const nextConfig: NextConfig = {
     domains: ['localhost'],
   },
   
-  // Experimental features for better performance
-  experimental: {
-    serverComponentsExternalPackages: ['@prisma/client'],
-  },
+  // External packages for server components
+  serverExternalPackages: ['@prisma/client'],
 };
 
 export default nextConfig;
