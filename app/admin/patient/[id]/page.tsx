@@ -95,11 +95,20 @@ export default async function PatientDetail({
 
             if (!providerName || !startAt) return;
 
+            // Parse datetime-local value as local time, not UTC
+            // datetime-local format: "2025-10-17T10:00"
+            const localDate = new Date(startAt + ":00Z"); // Append seconds and Z to force UTC interpretation
+            // But we want local time, so let's construct it properly
+            const [datePart, timePart] = startAt.split('T');
+            const [year, month, day] = datePart.split('-').map(Number);
+            const [hour, minute] = timePart.split(':').map(Number);
+            const appointmentDate = new Date(year, month - 1, day, hour, minute);
+
             await prisma.appointment.create({
               data: {
                 patientId: id,
                 providerName,
-                startAt: new Date(startAt),
+                startAt: appointmentDate,
                 repeat: repeat as Repeat,
               },
             });
