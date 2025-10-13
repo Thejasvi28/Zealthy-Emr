@@ -1,0 +1,9 @@
+-- AlterTable
+ALTER TABLE "Appointment" ALTER COLUMN "startAt" SET DATA TYPE TIMESTAMP(6),
+ALTER COLUMN "repeatUntil" SET DATA TYPE TIMESTAMP(6);
+
+-- AlterTable
+ALTER TABLE "Patient" ALTER COLUMN "dob" SET DATA TYPE TIMESTAMP(6);
+
+-- AlterTable
+ALTER TABLE "Prescription" ALTER COLUMN "refillDate" SET DATA TYPE TIMESTAMP(6);

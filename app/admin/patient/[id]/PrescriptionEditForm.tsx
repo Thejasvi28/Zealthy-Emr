@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Pencil, Trash2, Save, X, Pill, CalendarClock, Package } from "lucide-react";
+import { formatDateOnly, formatDateDisplay } from "@/lib/dateUtils";
 
 interface Medication {
   name: string;
@@ -28,7 +29,7 @@ export default function PrescriptionEditForm({ prescription, patientId }: Prescr
     dosage: prescription.dosage,
     quantity: prescription.quantity,
     refillDate: prescription.refillDate 
-      ? new Date(prescription.refillDate).toISOString().split('T')[0] 
+      ? formatDateOnly(prescription.refillDate)
       : "",
     refillSchedule: prescription.refillSchedule,
   });
@@ -176,7 +177,7 @@ export default function PrescriptionEditForm({ prescription, patientId }: Prescr
             <span className="flex items-center gap-1">
               <CalendarClock className="w-3 h-3" />
               Refill: {prescription.refillDate
-                ? new Date(prescription.refillDate).toLocaleDateString()
+                ? formatDateDisplay(prescription.refillDate)
                 : "—"}
             </span>
             <span className="px-2 py-1 bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300 rounded-full text-xs">

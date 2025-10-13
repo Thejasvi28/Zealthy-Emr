@@ -1,29 +1,33 @@
-// Utility function to format date without timezone conversion
+// Utility functions to format dates WITHOUT timezone conversion
+// These functions treat all dates as local time, ignoring timezones completely
+
 export function formatDateTimeLocal(date: Date | string): string {
-  const d = new Date(date);
-  const year = d.getFullYear();
-  const month = String(d.getMonth() + 1).padStart(2, '0');
-  const day = String(d.getDate()).padStart(2, '0');
-  const hours = String(d.getHours()).padStart(2, '0');
-  const minutes = String(d.getMinutes()).padStart(2, '0');
-  
-  return `${year}-${month}-${day}T${hours}:${minutes}`;
+  // Parse the ISO string directly without timezone conversion
+  const dateStr = typeof date === 'string' ? date : date.toISOString();
+  // Extract YYYY-MM-DDTHH:MM directly
+  return dateStr.slice(0, 16);
 }
 
 export function formatDateDisplay(date: Date | string): string {
-  const d = new Date(date);
-  return d.toLocaleDateString('en-US', { 
-    month: '2-digit',
-    day: '2-digit', 
-    year: 'numeric'
-  });
+  // Parse as UTC to display exactly what's in the database
+  const dateStr = typeof date === 'string' ? date : date.toISOString();
+  const [year, month, day] = dateStr.split('T')[0].split('-');
+  return `${month}/${day}/${year}`;
 }
 
 export function formatTimeDisplay(date: Date | string): string {
-  const d = new Date(date);
-  return d.toLocaleTimeString('en-US', { 
-    hour: '2-digit', 
-    minute: '2-digit',
-    hour12: true
-  });
+  // Parse as UTC to display exactly what's in the database
+  const dateStr = typeof date === 'string' ? date : date.toISOString();
+  const time = dateStr.split('T')[1];
+  const [hours, minutes] = time.split(':');
+  const hour = parseInt(hours);
+  const ampm = hour >= 12 ? 'PM' : 'AM';
+  const displayHour = hour === 0 ? 12 : hour > 12 ? hour - 12 : hour;
+  return `${displayHour.toString().padStart(2, '0')}:${minutes} ${ampm}`;
+}
+
+export function formatDateOnly(date: Date | string): string {
+  // Parse as UTC and return YYYY-MM-DD for date input
+  const dateStr = typeof date === 'string' ? date : date.toISOString();
+  return dateStr.split('T')[0];
 }

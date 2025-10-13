@@ -13,7 +13,7 @@ model Patient {
   passwordHash String
   firstName    String
   lastName     String
-  dob          DateTime?
+  dob          DateTime?      @db.Timestamp(6)
   phone        String?
   address      String?
   city         String?
@@ -30,10 +30,10 @@ model Appointment {
   patient        Patient  @relation(fields: [patientId], references: [id])
   patientId      String
   providerName   String
-  startAt        DateTime
+  startAt        DateTime @db.Timestamp(6)
   repeat         Repeat   @default(NONE)
   repeatInterval Int      @default(1)
-  repeatUntil    DateTime?
+  repeatUntil    DateTime? @db.Timestamp(6)
   createdAt      DateTime @default(now())
   updatedAt      DateTime @updatedAt
 }
@@ -68,7 +68,7 @@ model Prescription {
   medicationId    String
   dosage          String
   quantity        Int
-  refillDate      DateTime?
+  refillDate      DateTime?   @db.Timestamp(6)
   refillSchedule  RefillSchedule @default(NONE)
   createdAt       DateTime @default(now())
   updatedAt       DateTime @updatedAt

@@ -186,13 +186,20 @@ export default async function PatientDetail({
 
             if (!medicationId || !dosage || !quantity) return;
 
+            // Parse refillDate without timezone conversion
+            let parsedRefillDate = null;
+            if (refillDate) {
+              // Format: YYYY-MM-DD from date input
+              parsedRefillDate = new Date(refillDate + 'T00:00:00.000Z');
+            }
+
             await prisma.prescription.create({
               data: {
                 patientId: id,
                 medicationId,
                 dosage,
                 quantity,
-                refillDate: refillDate ? new Date(refillDate) : null,
+                refillDate: parsedRefillDate,
                 refillSchedule: refillSchedule as RefillSchedule,
               },
             });

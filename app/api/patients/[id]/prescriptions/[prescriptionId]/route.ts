@@ -44,12 +44,19 @@ export async function PUT(
     }
 
     // Update the prescription
+    // Parse refillDate without timezone conversion
+    let parsedRefillDate = null;
+    if (refillDate) {
+      // Format: YYYY-MM-DD from date input
+      parsedRefillDate = new Date(refillDate + 'T00:00:00.000Z');
+    }
+
     const updatedPrescription = await prisma.prescription.update({
       where: { id: prescriptionId },
       data: {
         dosage,
         quantity: Number(quantity),
-        refillDate: refillDate ? new Date(refillDate) : null,
+        refillDate: parsedRefillDate,
         refillSchedule,
       },
     });
