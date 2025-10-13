@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Pencil, Trash2, Save, X, CalendarDays, Clock, Repeat } from "lucide-react";
+import { formatDateTimeLocal, formatDateDisplay, formatTimeDisplay } from "@/lib/dateUtils";
 
 interface Appointment {
   id: string;
@@ -20,7 +21,7 @@ export default function AppointmentEditForm({ appointment }: AppointmentEditForm
   const [isEditing, setIsEditing] = useState(false);
   const [formData, setFormData] = useState({
     providerName: appointment.providerName,
-    startAt: new Date(appointment.startAt).toISOString().slice(0, 16),
+    startAt: formatDateTimeLocal(appointment.startAt),
     repeat: appointment.repeat,
   });
   const [loading, setLoading] = useState(false);
@@ -152,19 +153,11 @@ export default function AppointmentEditForm({ appointment }: AppointmentEditForm
           <div className="text-sm text-gray-600 dark:text-gray-400 flex items-center gap-4">
             <span className="flex items-center gap-1">
               <Clock className="w-3 h-3" />
-              {new Date(appointment.startAt).toLocaleDateString('en-US', { 
-                month: '2-digit',
-                day: '2-digit', 
-                year: 'numeric'
-              })}
+              {formatDateDisplay(appointment.startAt)}
             </span>
             <span className="flex items-center gap-1">
               <Clock className="w-3 h-3" />
-              {new Date(appointment.startAt).toLocaleTimeString('en-US', { 
-                hour: '2-digit', 
-                minute: '2-digit',
-                hour12: true
-              })}
+              {formatTimeDisplay(appointment.startAt)}
             </span>
             <span className="flex items-center gap-1">
               <Repeat className="w-3 h-3" />
