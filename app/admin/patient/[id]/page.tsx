@@ -1,6 +1,7 @@
 import { prisma } from "@/lib/db";
 import Link from "next/link";
 import { revalidatePath } from "next/cache";
+import { redirect } from "next/navigation";
 import { CalendarDays, ClipboardList, ArrowLeft } from "lucide-react";
 import PatientEditForm from "./PatientEditForm";
 import AppointmentEditForm from "./AppointmentEditForm";
@@ -104,6 +105,7 @@ export default async function PatientDetail({
             });
 
             revalidatePath(`/admin/patient/${id}`);
+            redirect(`/admin/patient/${id}`);
           }}
           className="space-y-3 mt-3 bg-gray-50 dark:bg-[#0a0a0a] p-4 rounded-lg border border-gray-200 dark:border-gray-800"
         >
@@ -187,6 +189,7 @@ export default async function PatientDetail({
             });
 
             revalidatePath(`/admin/patient/${id}`);
+            redirect(`/admin/patient/${id}`);
           }}
           className="space-y-3 mt-3 bg-gray-50 dark:bg-[#0a0a0a] p-4 rounded-lg border border-gray-200 dark:border-gray-800"
         >
